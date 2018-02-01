@@ -1,10 +1,16 @@
 
 if [ $# != 2 ]; then
-	echo "Usage: sudo bash auto.sh <Your home IP> <Server IP>"
+	echo "Usage: sudo bash auto.sh <Your home IP> <Your username>"
 	echo "The IP addresses are used to configure MongoDB."
+	echo "The username will be created with sudo privileges."
 	echo ""
 	exit 1
 fi
+
+adduser $2
+usermod -aG sudo $2
+echo "$2 has been created and added to the sudo group"
+echo ""
 
 echo "Installing Node..."
 curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash - > /dev/null
