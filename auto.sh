@@ -9,11 +9,10 @@ fi
 
 adduser $2
 usermod -aG sudo $2
-echo "$2 has been created and added to the sudo group"
-echo ""
+echo "User $2 has been created and added to the sudo group"
 
 echo "Installing Node..."
-curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash - > /dev/null
+curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash - > /dev/null 2>&1
 sudo apt-get install nodejs -y > /dev/null 2>&1
 
 echo "Installing Nginx..."
@@ -31,38 +30,37 @@ sudo apt-get autoclean -y > /dev/null 2>&1
 
 echo "Installing MongoDB..."
 sudo apt-get install -y mongodb-org > /dev/null 2>&1
-sudo systemctl start mongodb
-sudo systemctl enable mongodb
 
 echo "Installing PM2..."
-sudo npm install -g pm2
+sudo npm install -g pm2 > /dev/null 2>&1
 pm2 startup | tail -1 > pm2start
 sudo bash pm2start > /dev/null 2>&1
 rm -f pm2start > /dev/null 2>&1
 
 echo "Configuring UFW..."
-sudo ufw allow from $1 to any port 27017 > /dev/null
-sudo ufw allow OpenSSH > /dev/null
-sudo ufw allow 'Nginx Full' > /dev/null
+sudo ufw allow from $1 to any port 27017 > /dev/null 2>&1
+sudo ufw allow OpenSSH > /dev/null 2>&1
+sudo ufw allow 'Nginx Full' > /dev/null 2>&1
 
 echo ""
 echo ""
 echo Press "Y" and then "Enter" at the following prompt:
 sudo ufw enable
-sudo service nginx restart > /dev/null
+sudo service nginx restart > /dev/null 2>&1
 
 echo "Cleaning up..."
 sudo apt-get update > /dev/null 2>&1
 sudo apt-get upgrade -y > /dev/null 2>&1
 sudo apt-get autoremove -y > /dev/null 2>&1
 sudo apt-get autoclean -y > /dev/null 2>&1
+sudo systemctl start mongodb > /dev/null 2>&1
+sudo systemctl enable mongodb > /dev/null 2>&1
 
-#mkdir website
-#mv express website/server.js
-#cd website
-#sudo npm install express
-
-clear
+echo ""
+echo ""
+echo ""
+echo ""
+echo ""
 echo "Installation complete."
 echo ""
 echo node `node -v`
@@ -73,4 +71,3 @@ nginx -v
 echo Firewall
 sudo ufw status
 sudo systemctl status mongodb
-#sudo pm2 start server.js
