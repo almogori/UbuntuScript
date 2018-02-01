@@ -1,6 +1,6 @@
 
 ## Missing features:
-- Nginx stuff. Planning on making an easy to use, SSL enabling script to make Nginx easier to use. For now, if needed, here's the file from the old script: https://raw.githubusercontent.com/OriAlmogCode/UbuntuStartup/master/nginxconf
+- Nginx stuff. Planning on making an easy to use, SSL enabling script to make Nginx easier to use. For now, if needed, here's the file from the old script: https://raw.githubusercontent.com/OriAlmogCode/UbuntuStartup/master/nginxconf (This was placed here /etc/nginx/sites-available/default)
 - Creating website. This should anyways be done in the home directory of the user that is created (/home/{username})
 
 ## Next steps:
