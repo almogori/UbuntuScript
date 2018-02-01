@@ -1,28 +1,31 @@
 
+@echo off
+
 if [ $# != 2 ]; then
 	echo "Usage: sudo bash auto.sh <Your home IP> <Server IP>"
 	echo "The IP addresses are used to configure MongoDB."
+	exit 1
 fi
 
 echo "Installing Node..."
-curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
-sudo apt-get install nodejs -y
+curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash - > /dev/null
+sudo apt-get install nodejs -y > /dev/null
 
 echo "Installing Nginx..."
-sudo apt-get install nginx -y
+sudo apt-get install nginx -y > /dev/null
 
 echo "Adding MongoDB repositories..."
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5
-echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.6 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.6.list
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5 > /dev/null
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.6 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.6.list > /dev/null
 
 echo "Updating Ubuntu..."
-sudo apt-get update
-sudo apt-get upgrade -y
-sudo apt-get autoremove
-sudo apt-get autoclean
+sudo apt-get update > /dev/null
+sudo apt-get upgrade -y > /dev/null
+sudo apt-get autoremove -y > /dev/null
+sudo apt-get autoclean -y > /dev/null
 
 echo "Installing MongoDB..."
-sudo apt-get install -y mongodb-org
+sudo apt-get install -y mongodb-org > /dev/null
 
 echo "Configuring MongoDB..."
 #sudo cp mongoconf /etc/systemd/system/mongodb.service
@@ -40,32 +43,33 @@ rm -f pm2start
 clear
 
 echo "Configuring UFW..."
-sudo ufw allow from $1 to any port 27017
-sudo ufw allow OpenSSH
-sudo ufw allow 'Nginx Full'
+sudo ufw allow from $1 to any port 27017 > /dev/null
+sudo ufw allow OpenSSH > /dev/null
+sudo ufw allow 'Nginx Full' > /dev/null
 
+clear
 echo Press "Y" and then "Enter" at the following prompt:
 sudo ufw enable
-sudo service nginx restart
+sudo service nginx restart > /dev/null
 
 echo "Cleaning up..."
-sudo apt-get update
-sudo apt-get upgrade -y
-sudo apt-get autoremove
-sudo apt-get autoclean
+sudo apt-get update > /dev/null
+sudo apt-get upgrade -y > /dev/null
+sudo apt-get autoremove -y > /dev/null
+sudo apt-get autoclean -y > /dev/null
 
 #mkdir website
 #mv express website/server.js
 #cd website
 #sudo npm install express
-echo "Installation complete."
+echo "Installation complete.\n"
 
 echo node `node -v`
 git --version
 echo PM2 `pm2 -V`
 echo npm `npm -v`
 nginx -v
-echo Firewall Status:
+echo Firewall
 sudo ufw status
-sudo systemctl status mongodb
+#sudo systemctl status mongodb
 #sudo pm2 start server.js
