@@ -30,6 +30,8 @@ sudo apt-get autoclean -y > /dev/null 2>&1
 
 echo "Installing MongoDB..."
 sudo apt-get install -y mongodb-org > /dev/null 2>&1
+sudo systemctl start mongod > /dev/null 2>&1
+sudo systemctl enable mongod > /dev/null 2>&1
 
 echo "Installing PM2..."
 sudo npm install -g pm2 > /dev/null 2>&1
@@ -42,8 +44,6 @@ sudo ufw allow from $1 to any port 27017 > /dev/null 2>&1
 sudo ufw allow OpenSSH > /dev/null 2>&1
 sudo ufw allow 'Nginx Full' > /dev/null 2>&1
 
-echo ""
-echo ""
 echo Press "Y" and then "Enter" at the following prompt:
 sudo ufw enable
 sudo service nginx restart > /dev/null 2>&1
@@ -53,8 +53,6 @@ sudo apt-get update > /dev/null 2>&1
 sudo apt-get upgrade -y > /dev/null 2>&1
 sudo apt-get autoremove -y > /dev/null 2>&1
 sudo apt-get autoclean -y > /dev/null 2>&1
-sudo systemctl start mongodb > /dev/null 2>&1
-sudo systemctl enable mongodb > /dev/null 2>&1
 
 echo ""
 echo ""
@@ -62,12 +60,13 @@ echo ""
 echo ""
 echo ""
 echo "Installation complete."
-echo ""
 echo node `node -v`
-git --version
 echo PM2 `pm2 -V`
 echo npm `npm -v`
 nginx -v
+mongo --version | head -1
+mongod --version | head -1
+pm2 status
+sudo systemctl status mongod
 echo Firewall
 sudo ufw status
-sudo systemctl status mongodb
